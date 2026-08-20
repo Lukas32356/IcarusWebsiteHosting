@@ -87,9 +87,11 @@ if __name__ == "__main__":
     print("http://localhost:5000")
     print()
 
+    port = int(os.environ.get("PORT", 5000))
+    
     socketio.run(
         app,
         host="0.0.0.0",
-        port=5000,
+        port=port,
         allow_unsafe_werkzeug=True
     )
