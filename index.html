@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ICARUS — Olympus Map</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="topbar">
+
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            I
+        </div>
+
+        <div>
+
+            <div class="logo-title">
+                ICARUS
+            </div>
+
+            <div class="logo-subtitle">
+                OLYMPUS MAP
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <span>🔍</span>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Cave, Titan, Deep Ore..."
+        >
+
+    </div>
+
+
+    <div class="server-status">
+
+        <span
+            class="status-dot"
+            id="status-dot"
+        ></span>
+
+        <span id="status-text">
+            OFFLINE
+        </span>
+
+    </div>
+
+
+</header>
+
+
+
+<main>
+
+
+    <!-- =========================
+         KARTE
+    ========================== -->
+
+    <div id="map-container">
+
+
+        <div id="map-layer">
+
+
+            <img
+                id="map"
+                src="images/olympus.png"
+                alt="ICARUS Olympus"
+            >
+
+
+            <div id="markers"></div>
+
+
+        </div>
+
+
+
+        <!-- KARTEN-STEUERUNG -->
+
+        <div class="map-controls">
+
+            <button
+                id="zoom-in"
+                title="Vergrößern"
+            >
+                +
+            </button>
+
+            <button
+                id="zoom-out"
+                title="Verkleinern"
+            >
+                −
+            </button>
+
+            <button
+                id="reset-map"
+                title="Karte zurücksetzen"
+            >
+                ⌖
+            </button>
+
+        </div>
+
+
+
+        <!-- TITEL -->
+
+        <div class="map-info">
+
+            <div class="map-info-title">
+                OLYMPUS
+            </div>
+
+            <div class="map-info-subtitle">
+                SURVIVAL MAP
+            </div>
+
+        </div>
+
+
+
+        <!-- HOVER INFO -->
+
+        <div id="marker-info"></div>
+
+
+
+        <!-- NEUER MARKER -->
+
+        <button
+            id="add-marker-button"
+            class="add-marker-button"
+        >
+
+            <span>+</span>
+
+            Neuer Marker
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         RECHTES PANEL
+    ========================== -->
+
+    <aside class="side-panel">
+
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-title">
+                    FUNDORTE
+                </div>
+
+                <div class="panel-subtitle">
+                    LOCATION DATABASE
+                </div>
+
+            </div>
+
+
+            <div class="marker-count">
+
+                <span id="marker-count">
+                    0
+                </span>
+
+                MARKER
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EDITOR -->
+
+        <section class="editor">
+
+
+            <div class="section-title">
+
+                <span>MARKER</span>
+
+                <span class="section-line"></span>
+
+            </div>
+
+
+
+            <div
+                id="selected-info"
+                class="selected-info"
+            >
+
+                <div class="empty-marker">
+
+                    <div class="empty-icon">
+                        +
+                    </div>
+
+                    Kein Marker ausgewählt.
+
+                    <small>
+                        Klicke auf einen Marker
+                        oder erstelle einen neuen.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+
+            <label for="marker-name">
+                NAME
+            </label>
+
+
+            <input
+                type="text"
+                id="marker-name"
+                placeholder="z.B. Cave 12"
+            >
+
+
+
+            <label for="resource">
+                RESSOURCEN
+            </label>
+
+
+            <select
+                id="resource"
+                multiple
+            >
+
+                <option value="iron">
+                    Eisen
+                </option>
+
+                <option value="copper">
+                    Kupfer
+                </option>
+
+                <option value="aluminium">
+                    Aluminium
+                </option>
+
+                <option value="gold">
+                    Gold
+                </option>
+
+                <option value="titanium">
+                    Titan
+                </option>
+
+                <option value="platinum">
+                    Platin
+                </option>
+
+                <option value="exotic">
+                    Exotics
+                </option>
+
+                <option value="deep">
+                    Tiefenerz
+                </option>
+
+                <option value="cave">
+                    Cave
+                </option>
+
+                <option value="other">
+                    Sonstiges
+                </option>
+
+            </select>
+
+
+            <div class="input-hint">
+                STRG + KLICK FÜR MEHRERE
+            </div>
+
+
+
+            <label for="note">
+                NOTIZ
+            </label>
+
+
+            <textarea
+                id="note"
+                placeholder="Informationen zu diesem Fundort..."
+            ></textarea>
+
+
+
+            <div class="editor-buttons">
+
+                <button
+                    id="save-button"
+                    class="save-button"
+                >
+                    SPEICHERN
+                </button>
+
+
+                <button
+                    id="delete-button"
+                    class="delete-button"
+                >
+                    🗑
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- FILTER -->
+
+        <section class="filters">
+
+
+            <div class="section-title">
+
+                <span>FILTER</span>
+
+                <span class="section-line"></span>
+
+            </div>
+
+
+
+            <label class="filter">
+
+                <input
+                    type="checkbox"
+                    id="filterUnknown"
+                    checked
+                >
+
+                <span class="filter-icon unknown">
+                    ?
+                </span>
+
+                Unbekannte
+
+            </label>
+
+
+
+            <label class="filter">
+
+                <input
+                    type="checkbox"
+                    id="filterDeep"
+                    checked
+                >
+
+                <span class="filter-icon deep">
+                    ⛏
+                </span>
+
+                Tiefenerz
+
+            </label>
+
+
+
+            <label class="filter">
+
+                <input
+                    type="checkbox"
+                    id="filterCaves"
+                    checked
+                >
+
+                <span class="filter-icon cave">
+                    🕳
+                </span>
+
+                Höhlen
+
+            </label>
+
+
+
+            <label class="filter">
+
+                <input
+                    type="checkbox"
+                    id="filterResources"
+                    checked
+                >
+
+                <span class="filter-icon resource">
+                    ◆
+                </span>
+
+                Ressourcen
+
+            </label>
+
+
+        </section>
+
+
+
+        <div class="server-box">
+
+            <div
+                class="server-indicator"
+                id="server-indicator"
+            ></div>
+
+            <div>
+
+                <strong>
+                    LIVE MAP
+                </strong>
+
+                <small>
+                    Änderungen werden synchronisiert
+                </small>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+</main>
+
+
+
+<!--
+    Socket.IO wird direkt vom Flask-Server geladen.
+-->
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
